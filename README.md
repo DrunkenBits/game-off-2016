@@ -1,4 +1,4 @@
-# GitHub Game Off 2016
+# GitHub Game Off 201..6
 
 ![GitHub Game Off 2016 Theme is Hacking, Modding, or Augmenting](https://cloud.githubusercontent.com/assets/121322/19498019/d8827370-9543-11e6-82d8-6da822b6147b.png)
 
@@ -32,7 +32,7 @@ We'll highlight some of our favorites on the GitHub blog, and the world will get
 * Update the `README.md` file to include a description of your game, how/where to play/download it, how to build/compile it, what dependencies it has, etc.
 * Submit your final game using this [form][wufoo-form].
 
-## It's dangerous to go alone <img src="https://octodex.github.com/images/linktocat.jpg" height="40">
+## iT'S DANGEROus to go alone <img src="https://octodex.github.com/images/linktocat.jpg" height="40">
 
 If you're **new to Git, GitHub, or version control**…
 
