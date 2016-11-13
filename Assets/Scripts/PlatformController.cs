@@ -8,12 +8,15 @@ public class PlatformController : Glitchable {
     public float moveForce = 5f;
     public float maxSpeed = 5f;
     public float jumpForce = 1000f;
+    public float deathForce = 30.0f;
     public Transform groundCheck;
+    public GameObject headShotParticle;
 
     private bool grounded = false;
     private Animator anim;
     private Rigidbody2D rb2d;
     private bool dirty = false;
+    private string state = "alive";
 
     // Use this for initialization
     void Awake ()
@@ -35,6 +38,10 @@ public class PlatformController : Glitchable {
 
     void FixedUpdate()
     {
+        if (this.state == "dead") {
+            return;
+        }
+
         float h = Input.GetAxis("Horizontal");
 
         //anim.SetFloat("Speed", Mathf.Abs(h));
@@ -77,6 +84,35 @@ public class PlatformController : Glitchable {
         }
     }
 
+    void Hit(object[] data)
+    {
+      this.rb2d.fixedAngle = false;
+
+      RaycastHit2D hit = (RaycastHit2D)data[0];
+      GameObject hitter = (GameObject)data[1];
+      Transform head = this.transform.Find("Head");
+
+      Instantiate(
+        this.headShotParticle,
+        head.position,
+        Quaternion.identity
+      );
+
+      this.rb2d.AddForceAtPosition(
+        Vector2.right * -1 * Mathf.Sign(this.transform.position.x - hitter.transform.position.x) * this.deathForce,
+        hit.point,
+        ForceMode2D.Impulse
+      );
+
+      this.state = "dead";
+
+      this.Invoke("ResetGame", 5.0f);
+    }
+
+    void ResetGame()
+    {
+      Application.LoadLevel(Application.loadedLevel);
+    }
 
     void Flip()
     {

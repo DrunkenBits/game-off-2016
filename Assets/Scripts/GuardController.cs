@@ -16,6 +16,7 @@ public class GuardController : Glitchable {
   public float speed = 3.5f;
   public float minDistance = 0.01f;
   public float minPlayerDistance = 30.0f;
+  public GameObject shootParticles;
 
   protected int nextPoint = 0;
   protected Rigidbody2D rb;
@@ -41,8 +42,8 @@ public class GuardController : Glitchable {
 
         if (Mathf.Abs(playerDist) < this.minPlayerDistance) {
           if (Mathf.Sign(playerDist) == Mathf.Sign(this.transform.localScale.x)) {
-            this.anim.SetTrigger("Fire");
             this.state = "attacking";
+            this.anim.SetTrigger("Fire");
           }
         }
       }
@@ -77,6 +78,30 @@ public class GuardController : Glitchable {
         this.transform.localScale = new Vector3(initialScale.x * (right ? 1 : -1), initialScale.y, initialScale.z);
         this.rb.velocity = new Vector2(this.speed * (right ? 1 : -1) * this.getTime(), this.rb.velocity.y);
       }
+    }
+  }
+
+  public void Fire() {
+    GameObject player = GameObject.FindWithTag("Player");
+    Transform gunSpot = this.transform.Find("Gun Spot");
+
+    Instantiate(this.shootParticles, gunSpot.position, Quaternion.identity);
+
+    RaycastHit2D hit = Physics2D.Raycast(
+      this.transform.position,
+      Vector2.right * Mathf.Sign(this.transform.localScale.x),
+      Mathf.Infinity,
+      LayerMask.GetMask("Obstacles", "Player")
+    );
+
+    if (hit) {
+      Debug.Log("Hit something");
+      Debug.Log(hit.transform.gameObject);
+      hit.transform.gameObject.SendMessage(
+        "Hit",
+        new object[] { hit, this.transform.gameObject },
+        SendMessageOptions.DontRequireReceiver
+      );
     }
   }
 
