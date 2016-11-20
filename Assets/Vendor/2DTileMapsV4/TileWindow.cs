@@ -218,7 +218,7 @@ public class TileWindow : EditorWindow
 	[CustomEditor(typeof(GameObject))]
 	public class SceneGUITest : Editor
 	{
-		[DrawGizmo(GizmoType.NotSelected)]
+		[DrawGizmo(GizmoType.NotInSelectionHierarchy)]
 		static void RenderCustomGizmo(Transform objectTransform, GizmoType gizmoType)
 		{
 			if (isEnabled && isGrid)
